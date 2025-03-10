@@ -1,25 +1,20 @@
 import React, { useState } from "react";
 import { useTasks } from "../contexts/task.context";
-import { SafeAreaView, StyleSheet, View, Button, TextInput, Text} from "react-native";
-
+import { SafeAreaView, StyleSheet, View, Button, TextInput} from "react-native";
 
 const AddTask = ({ navigation }) => {
   const { addTask } = useTasks();
   const [newTask, setNewTask] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [dueDate, setDueDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
-
+  
+   // function to add task and handles the input fields
   const handleAddTask = () => {
     if (newTask.trim() === '') return; // Avoid empty tasks
-    addTask({ title: newTask, description, dueDate, completed: false }); // Add task with title, description, dueDate, and completed as false
+    addTask({ title: newTask, description, completed: false }); // Add task with title, description, dueDate, and completed as false
     setNewTask(''); // Clear input field after adding task
     setDescription(''); // Clear description input
-    setDueDate(new Date()); // Reset dueDate
     navigation.goBack(); // Navigate back to previous screen
   };
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,9 +34,7 @@ const AddTask = ({ navigation }) => {
           value={description}
         />
 
-        <View style={styles.dueDateContainer}>
-          <Text style={styles.datePickerLabel}>Select a due date:</Text>            
-
+        <View style={styles.dueDateContainer}>         
         </View>
         <Button title="Add task" onPress={handleAddTask} />
       </View>
@@ -64,6 +57,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginHorizontal: 16,
     flex: 0.25,
+    
   },
   taskText: {
     flex: 1,
@@ -77,13 +71,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 20,
   },
   datePickerLabel: {
     color: '#fff',
     fontSize: 16,
   },
   datePicker: {
-    width: '100%',
+    flex: 1,
     backgroundColor: '#fff',
     opacity: 0.8,
   },

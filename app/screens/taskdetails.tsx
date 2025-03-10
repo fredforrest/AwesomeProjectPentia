@@ -13,7 +13,6 @@ const TaskDetails = ({ route }) => {
       <Text style={styles.taskTitle}>{task.title}</Text>
       
       <Text style={styles.taskDescription}>{task.description}</Text>
-      <Text style={styles.taskDueDate}>Due Date: {task.dueDate}</Text>
       </View>
     </SafeAreaView>
   );
@@ -52,12 +51,19 @@ const styles = StyleSheet.create({
   },
   taskDescription: {
     fontSize: 18,
-    color: '#fff',
+    color: '#000',
+    backgroundColor: '#fff',
     marginTop: 10,
     padding: 10,
     borderColor: '#6200ee',
     borderWidth: 1,
-  },
+    borderRadius: 12,  // Adds rounded corners
+    width: 'auto',  // Ensures the box fits the content symmetrically
+    textAlign: 'center',  // Centers the text horizontally
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',  // Optional: Adds a soft shadow effect for a smoother appearance
+    marginLeft: 16,
+    marginRight: 16,
+  },  
   taskDueDate: {
     fontSize: 18,
     color: '#fff',

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 interface Task{
   title:string;
   description:string;
-  dueDate: Date;
+  dueDate?: Date;
   completed: boolean;
 }
 

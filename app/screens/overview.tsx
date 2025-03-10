@@ -2,7 +2,6 @@ import { SafeAreaView, StyleSheet, Text, View, Button, FlatList, Alert, TextInpu
 import React from 'react';
 import { useTasks } from '../contexts/task.context';
 import { TaskItem } from '../components/TaskItem';
-import { serializer } from "../../metro.config";
 
 const Overview = ({ navigation }) => {
 
@@ -15,6 +14,7 @@ const Overview = ({ navigation }) => {
     // a function to filter completed tasks marked as done
     const notCompletedTasks = tasks.filter(task => !task.completed);
     
+    // a function to search for tasks based on the input while keeping the notCompletedTasks
     const searchTasks = notCompletedTasks.filter(task => task.title.includes(searchedTask))
     
 
