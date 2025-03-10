@@ -1,11 +1,13 @@
-import { SafeAreaView, StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, Button, FlatList, Alert, TextInput } from "react-native";
 import React from 'react';
 import { useTasks } from '../contexts/task.context';
 import { TaskItem } from '../components/TaskItem';
+import { serializer } from "../../metro.config";
 
 const Overview = ({ navigation }) => {
 
     const {tasks, clearTasks } = useTasks();
+    const [searchedTask, setSearchedTask] = React.useState('');
 
     //function to clear all tasks and show alert popup
     const handleClearTasks = () => {clearTasks(); Alert.alert('Tasks are cleared')};
@@ -13,6 +15,9 @@ const Overview = ({ navigation }) => {
     // a function to filter completed tasks marked as done
     const notCompletedTasks = tasks.filter(task => !task.completed);
     
+    const searchTasks = notCompletedTasks.filter(task => task.title.includes(searchedTask))
+    
+
     return (
       //Insert all views and components from App.tsx
         <SafeAreaView style={styles.background}>
@@ -22,6 +27,11 @@ const Overview = ({ navigation }) => {
             </View>
 
             <View style={styles.buttonsContainer}>
+              <TextInput style={styles.taskText}
+                  value={searchedTask} 
+                   placeholder="Search ..."
+                   onChangeText={setSearchedTask}>
+              </TextInput>
                 <Button title="Add something to do" onPress={() => navigation.navigate('Add Task')} />
                 {tasks.length > 0 && (
                     <Button title="Clear" onPress={handleClearTasks} />
@@ -36,7 +46,7 @@ const Overview = ({ navigation }) => {
             ) : (
                 <FlatList
                 style={styles.tasksContainer}
-                data={notCompletedTasks}
+                data={searchTasks}
                 renderItem={({ item }) => 
                 <TaskItem 
                 task={item}
