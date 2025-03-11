@@ -49,6 +49,7 @@ const Overview = ({ navigation }) => {
           {tasks.length === 0 ? (
               <Text style={styles.errorNoTasks}>No tasks, why dont you add some?</Text>
             ) : (
+                
                 <FlatList
                 style={styles.tasksContainer}
                 data={searchTasks}
@@ -56,7 +57,6 @@ const Overview = ({ navigation }) => {
                 <TaskItem 
                 task={item}
                 onPressGoToDetails={() => navigation.navigate("Task Details", {task: item})} />}
-                keyExtractor={(item, index) => index.toString()} //unique key for each item when searching and displaying list later on
             />
             )}
 
@@ -69,6 +69,7 @@ const Overview = ({ navigation }) => {
                         data={overDueAndNotCompletedTasks}
                         renderItem={({ item }) =>
                             <TaskItem
+                                style={styles.overdueTaskItem}
                                 task={item}
                                 onPressGoToDetails={() =>
                                 navigation.navigate("Task Details", { task: item })}
@@ -135,6 +136,10 @@ const Overview = ({ navigation }) => {
     },
     overdueTasksContainer: {
       marginTop: 10,
+    },
+    overdueTaskItem: {
+      backgroundColor: 'red',
+
     },
 
   });

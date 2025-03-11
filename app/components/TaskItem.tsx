@@ -11,7 +11,7 @@ export const TaskItem = ({task, onPressGoToDetails,} : any) => {
     }
 
     return (
-            <Pressable onPress={onPressGoToDetails} style={styles.task}>
+            <Pressable onPress={onPressGoToDetails} style={task.isOverdue ? styles.taskRed : styles.task}>
                 <View style={styles.taskTextContainer}>
                     <Text style={styles.taskText}>{task.title}</Text>
                 </View>
@@ -39,5 +39,15 @@ const styles = StyleSheet.create({
     },
     taskText: {
         fontSize: 17,
+    },
+    taskRed: {
+        backgroundColor: 'red',
+        padding: 8,
+        marginBottom: 10,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        flexDirection: 'row',
+        marginHorizontal: 16,
     },
 })

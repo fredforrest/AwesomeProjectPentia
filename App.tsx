@@ -6,7 +6,6 @@ import { TaskProvider } from './app/contexts/task.context';
 import TaskDetails from './app/screens/taskdetails';
 import AddTask from './app/screens/addtask';
 import CompletedTasks from './app/screens/completedtasks.tsx';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
