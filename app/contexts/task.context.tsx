@@ -7,6 +7,7 @@ interface Task{
   description:string;
   dueDate?: Date;
   completed: boolean;
+  isOverdue?: boolean;
 }
 
 //Task context interface med task interface som array for at samle begge kontekster
@@ -31,21 +32,26 @@ const TaskContext = createContext<TaskContextInterface>({
   export const TaskProvider = ({ children } : any ) => {
     const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
-    // Load tasks from storage
-    const loadTasks = async () => {
-      // Get stored tasks from storage
-      const storedTasks = await AsyncStorage.getItem('tasks');
-      // If there are stored tasks, set them to the tasks state
-      if (storedTasks) {
-        //JSON is used because AsyncStorage only stores strings
-        setTasks(JSON.parse(storedTasks));
-      }
+    // Function to update the overdue status of tasks
+    const updateOverdueStatus = (tasks: Task[]): Task[] => {
+      const now = new Date();
+      return tasks.map(task => ({
+        ...task,
+        isOverdue: task.dueDate ? new Date(task.dueDate) < now : false,
+      }));
     };
-    // call the above function
-    loadTasks();
-    
-  }, []);
+
+    // Load tasks from storage and update overdue status
+    useEffect(() => {
+      const loadTasks = async () => {
+        const storedTasks = await AsyncStorage.getItem('tasks');
+        if (storedTasks) {
+          const parsedTasks = JSON.parse(storedTasks);
+          setTasks(updateOverdueStatus(parsedTasks)); // Update overdue status after loading
+        }
+      };
+      loadTasks();
+    }, []);
 
   useEffect(() => {
     // Save tasks to storage
@@ -58,16 +64,28 @@ const TaskContext = createContext<TaskContextInterface>({
   }, [tasks]);
 
   //tilføj ny task
-  const addTask = (newTask: Task ) => {setTasks([...tasks, newTask])};
+  const addTask = (newTask: Task) => {
+    const updatedTasks = updateOverdueStatus([...tasks, newTask]);
+    setTasks(updatedTasks);
+  };
 
   // Updates a task to be marked as Done
-  const updateTask = (taskToUpdate: Task) => {
-      setTasks(tasks.map(task => (task.title === taskToUpdate.title ? taskToUpdate : task)));
-    };
+ const updateTask = (taskToUpdate: Task) => {
+    const updatedTasks = updateOverdueStatus(
+      tasks.map(task => (task.title === taskToUpdate.title ? taskToUpdate : task))
+    );
+    setTasks(updatedTasks);
+  };
 
   //fjern en task - se hvordan du gjorde i app.tsx ved flatlisten
-  const removeTask = (taskToRemove: Task) => setTasks(tasks.filter(task => task.title !== taskToRemove.title));
+  const removeTask = (taskToRemove: Task) => {
+    const updatedTasks = updateOverdueStatus(
+      tasks.filter(task => task.title !== taskToRemove.title)
+    );
+    setTasks(updatedTasks);
+  };
 
+  
 //ryd listen af tasks
 const clearTasks = async () => { setTasks([]);
     await AsyncStorage.removeItem('tasks'); 

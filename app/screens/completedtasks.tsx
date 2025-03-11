@@ -13,26 +13,25 @@ const CompletedTasks = ( {navigation} ) => {
     const completedTasks = tasks.filter((task) => task.completed);
 
 
-  return (
-    <SafeAreaView style={styles.parentContainer}>
-    <View style={styles.childContainer}>
-      <Text style={styles.text}> You have {completedTasks.length.toString()} completed tasks</Text>
-        <FlatList
-            style={styles.taskContainer}
+    return (
+      <SafeAreaView style={styles.parentContainer}>
+        <View style={styles.childContainer}>
+          <Text style={styles.text}>You have {completedTasks.length.toString()} completed tasks</Text>
+          <FlatList
             data={completedTasks}
             keyExtractor={(item) => item.title}
-            renderItem={({item}) => (
-                <View style={styles.taskContainer}>
-                  <View style={styles.taskHeader}>
-                    <Text style={styles.taskTitle}>{item.title}</Text>
-                  </View>
-                    <Text style={styles.taskDescription}>{item.description}</Text>
+            renderItem={({ item }) => (
+              <View style={styles.taskItemContainer}>
+                <View style={styles.taskHeader}>
+                  <Text style={styles.taskTitle}>{item.title}</Text>
                 </View>
+                <Text style={styles.taskDescription}>{item.description}</Text>
+              </View>
             )}
-        />
-    </View>
-    </SafeAreaView>
-  );  
+          />
+        </View>
+      </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -51,12 +50,11 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       textAlign: 'center',
   },
-  taskContainer: {
-      borderColor: '#6200ee',
-      padding: 10,
-      borderWidth: 1,
-      backgroundColor: '#424242', 
-      marginBottom: 10,  
+  taskItemContainer: {
+    borderColor: 'green',
+    padding: 10,
+    backgroundColor: 'green', 
+    marginBottom: 10,  
   },
   taskHeader: {
       flexDirection: 'row',

@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
+
 const TaskDetails = ({ route }) => {
   const { task } = route.params;
+
+  const formateDate = new Date(task.dueDate).toLocaleDateString();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,6 +16,7 @@ const TaskDetails = ({ route }) => {
       <Text style={styles.taskTitle}>{task.title}</Text>
       
       <Text style={styles.taskDescription}>{task.description}</Text>
+      <Text style={styles.taskDueDate}>Due date: {formateDate}</Text>
       </View>
     </SafeAreaView>
   );
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
   taskContainer:{
     flex: 1,
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 24
   },
   taskTitle: {
     fontSize: 22,
@@ -68,7 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     marginTop: 25,
-
   },
 });
 

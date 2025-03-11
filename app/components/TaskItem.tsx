@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, Pressable } from "react-native";
+import {StyleSheet, Text, View, Button, Pressable, TouchableOpacity } from "react-native";
 import { useTasks } from '../contexts/task.context';
 
-export const TaskItem = ({task, onPressGoToDetails} : any) => {
-    const {updateTask} = useTasks();
+export const TaskItem = ({task, onPressGoToDetails,} : any) => {
+    const {updateTask} = useTasks()
 
     // Function to mark a task as done using the updateTask function from the TaskContext
     const markDone = () => {
@@ -11,12 +11,14 @@ export const TaskItem = ({task, onPressGoToDetails} : any) => {
     }
 
     return (
-      <Pressable onPress={onPressGoToDetails} style={styles.task}>
-          <View style={styles.taskTextContainer}>
-              <Text style={styles.taskText}>{task.title}</Text>
-          </View>
-          <Button title={"Done"} onPress={() => markDone()} />
-      </Pressable>
+            <Pressable onPress={onPressGoToDetails} style={styles.task}>
+                <View style={styles.taskTextContainer}>
+                    <Text style={styles.taskText}>{task.title}</Text>
+                </View>
+                    <Button title={"Done"} onPress={() => markDone()} />
+            </Pressable>
+        
+      
   )
 }
 

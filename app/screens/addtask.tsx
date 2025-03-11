@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { useTasks } from "../contexts/task.context";
-import { SafeAreaView, StyleSheet, View, Button, TextInput} from "react-native";
+import { SafeAreaView, StyleSheet, View, Button, TextInput, Alert} from "react-native";
+import DatePicker from 'react-native-date-picker'
+import { setDate } from "date-fns";
+
 
 const AddTask = ({ navigation }) => {
   const { addTask } = useTasks();
   const [newTask, setNewTask] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [dueDate, setDueDate] = useState(new Date());
   
    // function to add task and handles the input fields
   const handleAddTask = () => {
-    if (newTask.trim() === '') return; // Avoid empty tasks
-    addTask({ title: newTask, description, completed: false }); // Add task with title, description, dueDate, and completed as false
+    if (newTask.trim() === '') return Alert.alert('Add a title and description'); // Avoid empty tasks
+    addTask({ title: newTask, description, dueDate, completed: false }); // Add task with title, description, dueDate, and completed as false
     setNewTask(''); // Clear input field after adding task
     setDescription(''); // Clear description input
+    setDueDate(new Date()); // Clear due date input
     navigation.goBack(); // Navigate back to previous screen
   };
 
@@ -34,9 +39,14 @@ const AddTask = ({ navigation }) => {
           value={description}
         />
 
-        <View style={styles.dueDateContainer}>         
+        <View style={styles.dueDateContainer}>
+          <DatePicker 
+            date={dueDate}
+            onDateChange={setDueDate}
+            mode="date">
+          </DatePicker> 
         </View>
-        <Button title="Add task" onPress={handleAddTask} />
+        <Button title="Add" onPress={handleAddTask} />
       </View>
     </SafeAreaView>
   );
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 25,
     marginHorizontal: 16,
-    flex: 0.25,
+    flex: 0.55,
     
   },
   taskText: {
@@ -72,15 +82,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 20,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 6,
+    backgroundColor: '#fff',
   },
   datePickerLabel: {
     color: '#fff',
     fontSize: 16,
   },
   datePicker: {
-    flex: 1,
     backgroundColor: '#fff',
     opacity: 0.8,
+    marginTop: 10,
   },
 });
 

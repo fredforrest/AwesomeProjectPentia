@@ -3,6 +3,7 @@ import React from 'react';
 import { useTasks } from '../contexts/task.context';
 import { TaskItem } from '../components/TaskItem';
 
+
 const Overview = ({ navigation }) => {
 
     const {tasks, clearTasks } = useTasks();
@@ -11,17 +12,19 @@ const Overview = ({ navigation }) => {
     //function to clear all tasks and show alert popup
     const handleClearTasks = () => {clearTasks(); Alert.alert('Tasks are cleared')};
 
-    // a function to filter completed tasks marked as done
-    const notCompletedTasks = tasks.filter(task => !task.completed);
-    
+    // a function to filter completed tasks marked as done and not overdue
+    const notCompletedAndNotOverdueTasks = tasks.filter(task => !task.completed && !task.isOverdue);    
+
     // a function to search for tasks based on the input while keeping the notCompletedTasks
-    const searchTasks = notCompletedTasks.filter(task => task.title.includes(searchedTask))
-    
+    const searchTasks = notCompletedAndNotOverdueTasks.filter(task => task.title.toLowerCase().includes(searchedTask.toLowerCase()));
+   
+    // a function to filter tasks that are overdue
+    const overDueAndNotCompletedTasks = tasks.filter(task => !task.completed && task.isOverdue);    
 
     return (
       //Insert all views and components from App.tsx
         <SafeAreaView style={styles.background}>
-            
+
             <View style={styles.headerContainer}>
               <Text style={styles.headerText}>To-Do</Text>
             </View>
@@ -41,6 +44,8 @@ const Overview = ({ navigation }) => {
             {/* separator */}
           <View style={styles.separator}></View>
       
+
+         
           {tasks.length === 0 ? (
               <Text style={styles.errorNoTasks}>No tasks, why dont you add some?</Text>
             ) : (
@@ -54,7 +59,27 @@ const Overview = ({ navigation }) => {
                 keyExtractor={(item, index) => index.toString()} //unique key for each item when searching and displaying list later on
             />
             )}
+
+            <View style={styles.separator}></View>
+            {overDueAndNotCompletedTasks.length > 0 && (
+                <>
+                    <Text style={styles.errorNoTasks}>You have some overdue tasks</Text>
+                    <FlatList
+                        style={styles.overdueTasksContainer}
+                        data={overDueAndNotCompletedTasks}
+                        renderItem={({ item }) =>
+                            <TaskItem
+                                task={item}
+                                onPressGoToDetails={() =>
+                                navigation.navigate("Task Details", { task: item })}
+                            />
+                        }
+                    />
+                </>
+            )}
+
             <Button title="Completed Tasks" onPress={() => navigation.navigate('Completed Tasks')} />
+
         </SafeAreaView>
       )
   }
@@ -96,6 +121,7 @@ const Overview = ({ navigation }) => {
     separator: {
       height: 6,
       backgroundColor: '#6200ee',
+      marginTop: 8,
     },
     tasksContainer: {
       paddingTop: 10,
@@ -105,7 +131,12 @@ const Overview = ({ navigation }) => {
       fontSize: 16,
       textAlign: 'center',
       marginTop: 20,
+      marginBottom: 10,
     },
+    overdueTasksContainer: {
+      marginTop: 10,
+    },
+
   });
   
   export default Overview;
