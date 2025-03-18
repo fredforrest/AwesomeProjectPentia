@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTasks } from "../contexts/task.context";
 import { SafeAreaView, StyleSheet, View, Button, TextInput, Alert} from "react-native";
 import DatePicker from 'react-native-date-picker'
-import { setDate } from "date-fns";
+
 
 
 const AddTask = ({ navigation }) => {
