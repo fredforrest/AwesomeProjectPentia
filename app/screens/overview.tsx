@@ -22,7 +22,6 @@ const Overview = ({ navigation }) => {
     const overDueAndNotCompletedTasks = tasks.filter(task => !task.completed && task.isOverdue);    
 
     return (
-      //Insert all views and components from App.tsx
         <SafeAreaView style={styles.background}>
 
             <View style={styles.headerContainer}>
@@ -44,7 +43,6 @@ const Overview = ({ navigation }) => {
             {/* separator */}
           <View style={styles.separator}></View>
       
-
          
           {tasks.length === 0 ? (
               <Text style={styles.errorNoTasks}>No tasks, why dont you add some?</Text>
@@ -60,7 +58,10 @@ const Overview = ({ navigation }) => {
             />
             )}
 
+            {/* separator */}
             <View style={styles.separator}></View>
+
+            {/* show overdue tasks */}
             {overDueAndNotCompletedTasks.length > 0 && (
                 <>
                     <Text style={styles.errorNoTasks}>You have some overdue tasks</Text>

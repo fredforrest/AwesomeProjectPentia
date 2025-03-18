@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button, Pressable, TouchableOpacity } from "react-native";
+import {StyleSheet, Text, View, Button, Pressable } from "react-native";
 import { useTasks } from '../contexts/task.context';
 
 export const TaskItem = ({task, onPressGoToDetails,} : any) => {
